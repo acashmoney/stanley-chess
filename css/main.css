@@ -25,7 +25,7 @@ body {
 
 #board div {
     /* border-radius: 50%; */
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
 }
 
 .square {
@@ -33,4 +33,15 @@ body {
     text-align: center;
     color: black;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.whitePawn {
+    transform: rotate(90deg);
+}
+
+.blackPawn {
+    transform: rotate(90deg);
 }

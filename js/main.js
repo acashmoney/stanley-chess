@@ -1,5 +1,8 @@
 /*----- constants -----*/
 
+const whitePawnPath = '../assets/white-pawn.svg';
+const blackPawnPath = '../assets/black-pawn.svg';
+
 // board array to logically represent the squares
 const board = new Array(8);
 const boardFiles = {
@@ -35,7 +38,7 @@ class Piece {
 
 class Pawn extends Piece {
     constructor(color, square, isCaptured) {
-        super(color, square);
+        super(color, square, isCaptured);
     }
 
     findLegalMoves() {
@@ -119,6 +122,9 @@ class Pawn extends Piece {
 
 /*----- app's state (variables) -----*/
 
+// initialize starting position to true, then switch to false after starting position has been built
+let startingPosition = true;
+
 // chess position
 // human move
 // Stanley's move
@@ -139,6 +145,7 @@ const boardEl = document.getElementById('board');
 
 function init() {
     renderBoard(board)
+    buildStartingPosition();
 }
 
 function renderBoard(boardObj) {
@@ -158,10 +165,32 @@ function renderBoard(boardObj) {
 }
 
 function buildStartingPosition() {
+
     // build white pawns
-    
+    for (i=0; i<8; i++) {
+        let targetSquare = boardFiles[i] + '2';
+        const whitePawn = new Pawn('white', targetSquare, false);
+        const squareEl = document.getElementById(targetSquare);
+        const pawnEl = document.createElement('div');
+        pawnEl.setAttribute('class', 'whitePawn');
+        squareEl.appendChild(pawnEl);
+        const pawnGraphic = document.createElement('img');
+        pawnGraphic.setAttribute('src', whitePawnPath);
+        pawnEl.appendChild(pawnGraphic);
+    }
 
     // build black pawns
+    for (i=0; i<8; i++) {
+        let targetSquare = boardFiles[i] + '7';
+        const blackPawn = new Pawn('black', targetSquare, false);
+        const squareEl = document.getElementById(targetSquare);
+        const pawnEl = document.createElement('div');
+        pawnEl.setAttribute('class', 'blackPawn');
+        squareEl.appendChild(pawnEl);
+        const pawnGraphic = document.createElement('img')
+        pawnGraphic.setAttribute('src', blackPawnPath);
+        pawnEl.appendChild(pawnGraphic);
+    }
 }
 
 // render the gameState to update the board and pieces
