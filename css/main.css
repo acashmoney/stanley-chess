@@ -1,12 +1,36 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+    background-image: url('../assets/Chimp\ Background.jpg');
+}
+
 #board {
     border: .25vh solid grey;
     display: grid;
     grid-template-columns: repeat(8, 10vmin);
     grid-template-rows: repeat(8, 10vmin);
+    transform: rotate(270deg);
     /* gap: 1vmin; */
 }
 
 #board div {
     /* border-radius: 50%; */
     border: 1px solid grey;
+}
+
+.square {
+    font-size: 6vh;
+    text-align: center;
+    color: black;
+    background-color: white;
 }
