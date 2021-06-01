@@ -18,7 +18,7 @@ const boardFiles = {
 for (let i=0; i<8; i++) {
     board[i] = new Array(8);
     for (let j=0; j<8; j++) {
-        board[i][j] = boardFiles[i] + String(j+1);
+        board[i][j] = [boardFiles[i] + String(j+1), 'empty'];
     }
 }
 
@@ -27,93 +27,32 @@ for (let i=0; i<8; i++) {
 // ^ how each of the pieces move
 
 class Piece {
-    constructor(color, square, isCaptured) {
+    constructor(color, square, onStart, isCaptured) {
         this.color = color;
         this.square = square;
+        this.onStart = true;
         this.isCaptured = false;
     }
 };
 
 class Pawn extends Piece {
-    constructor(color, square, isCaptured) {
-        super(color, square, isCaptured);
+    constructor(color, square, onStart, isCaptured) {
+        super(color, square, onStart, isCaptured);
     }
 
     findLegalMoves() {
+        let movesArray = [];
+        if (this.color === 'white') {
 
+        } else {
+
+        }
     }
 
-    move() {
+    move(square1, square2) {
         this.findLegalMoves()
     }
 };
-
-// class Rook extends Piece{
-//     constructor(color, square) {
-//         super(color, square);
-//     }    
-
-//     findLegalMoves() {
-
-//     }
-
-//     move() {
-        
-//     }
-// };
-
-// class Knight extends Piece {
-//     constructor(color, square) {
-//         super(color, square);
-//     }
-
-//     findLegalMoves() {
-
-//     }
-
-//     move() {
-        
-//     }
-// };
-// class Bishop extends Piece{
-//     constructor(color, square) {
-//         super(color, square);
-//     }
-
-//     findLegalMoves() {
-
-//     }
-
-//     move() {
-        
-//     }
-// };
-// class Queen extends Piece{
-//     constructor(color, square) {
-//         super(color, square);
-//     }
-
-//     findLegalMoves() {
-
-//     }
-
-//     move() {
-        
-//     }
-// };
-// class King extends Piece{
-//     constructor(color, square) {
-//         super(color, square);
-//     }
-
-//     findLegalMoves() {
-
-//     }
-
-//     move() {
-        
-//     }
-// };
 
 // starting position
 
@@ -141,7 +80,7 @@ const newGameBtn = document.getElementById('new-game-btn').addEventListener('cli
     resetBoard();
 });
 
-boardEl.addEventListener('click', )
+// boardEl.addEventListener('click', )
 
 document.querySelectorAll('.square').forEach(squareEl => {
     squareEl.addEventListener('click', event => {
@@ -184,7 +123,7 @@ function buildStartingPosition() {
 
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '2';
-        const whitePawn = new Pawn('white', targetSquare, false);
+        const whitePawn = new Pawn('white', targetSquare, true, false);
         const squareEl = document.getElementById(targetSquare);
         const pawnEl = document.createElement('div');
         pawnEl.setAttribute('class', 'whitePawn');
@@ -196,7 +135,7 @@ function buildStartingPosition() {
 
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '7';
-        const blackPawn = new Pawn('black', targetSquare, false);
+        const blackPawn = new Pawn('black', targetSquare, true, false);
         const squareEl = document.getElementById(targetSquare);
         const pawnEl = document.createElement('div');
         pawnEl.setAttribute('class', 'blackPawn');
@@ -208,8 +147,9 @@ function buildStartingPosition() {
 }
 
 function resetBoard() {
-    // remove all the elements
-
+    while (boardEl.firstChild) {
+        boardEl.removeChild(boardEl.firstChild);
+    }
     renderBoard(board);
     buildStartingPosition();
     console.log('board reset. new game set up')
