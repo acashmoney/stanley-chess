@@ -3,7 +3,6 @@
 const whitePawnPath = '../assets/white-pawn.svg';
 const blackPawnPath = '../assets/black-pawn.svg';
 
-// board array to logically represent the squares
 const board = new Array(8);
 const boardFiles = {
     0: 'a',
@@ -16,7 +15,6 @@ const boardFiles = {
     7: 'h'
 }
 
-// create 2D array with square notation for each element
 for (let i=0; i<8; i++) {
     board[i] = new Array(8);
     for (let j=0; j<8; j++) {
@@ -46,7 +44,7 @@ class Pawn extends Piece {
     }
 
     move() {
-
+        this.findLegalMoves()
     }
 };
 
@@ -139,12 +137,30 @@ const boardEl = document.getElementById('board');
 
 /*----- event listeners -----*/
 
+const newGameBtn = document.getElementById('new-game-btn').addEventListener('click', () => {
+    resetBoard();
+});
 
+boardEl.addEventListener('click', )
+
+document.querySelectorAll('.square').forEach(squareEl => {
+    squareEl.addEventListener('click', event => {
+        // highlight square that is clicked
+        squareEl.style = 'background-color: rgb(31, 170, 113);'
+        console.log('highlighting square');
+    })
+})
+
+// const a1El = document.getElementById('a1')
+// a1El.addEventListener('click', event => {
+//     a1El.style = 'background-color: rgb(31, 170, 113);'
+//     console.log('highlighted a1')
+// })
 
 /*----- functions -----*/
 
 function init() {
-    renderBoard(board)
+    renderBoard(board);
     buildStartingPosition();
 }
 
@@ -166,7 +182,6 @@ function renderBoard(boardObj) {
 
 function buildStartingPosition() {
 
-    // build white pawns
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '2';
         const whitePawn = new Pawn('white', targetSquare, false);
@@ -179,7 +194,6 @@ function buildStartingPosition() {
         pawnEl.appendChild(pawnGraphic);
     }
 
-    // build black pawns
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '7';
         const blackPawn = new Pawn('black', targetSquare, false);
@@ -191,6 +205,14 @@ function buildStartingPosition() {
         pawnGraphic.setAttribute('src', blackPawnPath);
         pawnEl.appendChild(pawnGraphic);
     }
+}
+
+function resetBoard() {
+    // remove all the elements
+
+    renderBoard(board);
+    buildStartingPosition();
+    console.log('board reset. new game set up')
 }
 
 // render the gameState to update the board and pieces
