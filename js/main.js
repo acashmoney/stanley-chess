@@ -42,15 +42,91 @@ class Pawn extends Piece {
 
     findLegalMoves() {
         let movesArray = [];
-        if (this.color === 'white') {
+        let fileIndex = 0;
+        let rankIndex = 0;
 
-        } else {
-
+        for (let i=0; i<7; i++) {
+            for (let j=0; j<7; j++) {
+                if (board[i][j][0] === this.square) {
+                    fileIndex = i;
+                    rankIndex = j;
+                }
+            }
         }
+        
+        if (this.color === 'white') {
+            if (board[fileIndex][rankIndex + 1][1] === 'empty') {
+                if (board[fileIndex][rankIndex + 2][1] === 'empty' && this.onStart === true) {
+                    movesArray.push(board[fileIndex][rankIndex + 2][0])
+                }
+                movesArray.push(board[fileIndex][rankIndex + 1][0])
+            }
+            if (this.square.includes('a') === true) {
+                if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
+                    movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
+                }
+            } else if (this.square.includes('h') === true) {
+                if (board[fileIndex - 1][rankIndex + 1][1].color === 'black') {
+                    movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
+                }
+            } else {
+                if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
+                    movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
+                }
+                if (board[fileIndex - 1][rankIndex + 1][1].color === 'black') {
+                    movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
+                }
+            }
+        } else {
+            if (board[fileIndex][rankIndex - 1][1] === 'empty') {
+                if (board[fileIndex][rankIndex - 2][1] === 'empty' && this.onStart === true) {
+                    movesArray.push(board[fileIndex][rankIndex - 2][0])
+                }
+                movesArray.push(board[fileIndex][rankIndex - 1][0])
+            }
+        }   
+        if (this.square.includes('a') === true) {
+            if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
+                movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+            }
+        } else if (this.square.includes('h') === true) {
+            if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
+                movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+            }
+        } else {
+            if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
+                movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+            }
+            if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
+                movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+            }
+        }
+        return movesArray;
     }
 
-    move(square1, square2) {
-        this.findLegalMoves()
+    move(destinationSquare) {
+        let fileIndex = 0;
+        let rankIndex = 0;
+
+        for (let i=0; i<7; i++) {
+            for (let j=0; j<7; j++) {
+                if (board[i][j][0] === this.square) {
+                    fileIndex = i;
+                    rankIndex = j;
+                }
+            }
+        }
+        let legalMoves = findLegalMoves();
+        if (legalMoves.includes(destinationSquare)) {
+            this.square = destinationSquare;
+
+
+            this.onStart = false;
+
+            // need to move piece object to new square and update value of previous square to 'empty'
+        } else {
+            console.log('not a legal move');
+        }
     }
 };
 
@@ -107,7 +183,7 @@ function renderBoard(boardObj) {
     for (let i=0; i<boardObj.length; i++) {
         for (let j=0; j<boardObj.length; j++) {
             let square = document.createElement('div');
-            square.setAttribute('id', boardObj[i][j])
+            square.setAttribute('id', boardObj[i][j][0])
             square.setAttribute('class', 'square')
             if ((i+j) % 2 === 0) {
                 square.style.backgroundColor = '#8A3F09'
@@ -120,7 +196,6 @@ function renderBoard(boardObj) {
 }
 
 function buildStartingPosition() {
-
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '2';
         const whitePawn = new Pawn('white', targetSquare, true, false);
@@ -131,8 +206,8 @@ function buildStartingPosition() {
         const pawnGraphic = document.createElement('img');
         pawnGraphic.setAttribute('src', whitePawnPath);
         pawnEl.appendChild(pawnGraphic);
+        board[i][1][1] = whitePawn;
     }
-
     for (i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '7';
         const blackPawn = new Pawn('black', targetSquare, true, false);
@@ -143,6 +218,7 @@ function buildStartingPosition() {
         const pawnGraphic = document.createElement('img')
         pawnGraphic.setAttribute('src', blackPawnPath);
         pawnEl.appendChild(pawnGraphic);
+        board[i][6][1] = blackPawn;
     }
 }
 
