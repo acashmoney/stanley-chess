@@ -1,5 +1,5 @@
 /*----- constants -----*/
-
+// Images of pieces used in the game
 const whitePawnPath = '../assets/white-pawn.svg';
 const blackPawnPath = '../assets/black-pawn.svg';
 
@@ -22,24 +22,21 @@ for (let i=0; i<8; i++) {
     }
 }
 
-// piece class
-// pawn, rook, knight, bishop, queen, king objects
-// ^ how each of the pieces move
-
 class Piece {
-    constructor(color, square, onStart, isCaptured) {
+    constructor(color, square, onStart) {
         this.color = color;
         this.square = square;
         this.onStart = true;
-        this.isCaptured = false;
     }
 };
 
 class Pawn extends Piece {
-    constructor(color, square, onStart, isCaptured) {
-        super(color, square, onStart, isCaptured);
+    constructor(color, square, onStart) {
+        super(color, square, onStart);
     }
 
+    // Calculate legal moves for piece and 
+    // output available squares to an array
     findLegalMoves() {
         let movesArray = [];
         let fileIndex = 0;
@@ -53,8 +50,8 @@ class Pawn extends Piece {
                 }
             }
         }
-        
-        if (this.color === 'white') {
+
+        if (this.color === 'white' && playerTurn === 'white') {
             if (board[fileIndex][rankIndex + 1][1] === 'empty') {
                 if (board[fileIndex][rankIndex + 2][1] === 'empty' && this.onStart === true) {
                     movesArray.push(board[fileIndex][rankIndex + 2][0])
@@ -77,100 +74,85 @@ class Pawn extends Piece {
                     movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
                 }
             }
-        } else {
+        } else if (this.color === 'black' && playerTurn === 'black') {
             if (board[fileIndex][rankIndex - 1][1] === 'empty') {
                 if (board[fileIndex][rankIndex - 2][1] === 'empty' && this.onStart === true) {
                     movesArray.push(board[fileIndex][rankIndex - 2][0])
                 }
                 movesArray.push(board[fileIndex][rankIndex - 1][0])
-            }
-        }   
-        if (this.square.includes('a') === true) {
-            if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
-                movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
-            }
-        } else if (this.square.includes('h') === true) {
-            if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
-                movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
-            }
-        } else {
-            if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
-                movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
-            }
-            if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
-                movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+            }   
+            if (this.square.includes('a') === true) {
+                if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
+                    movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+                }
+            } else if (this.square.includes('h') === true) {
+                if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
+                    movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+                }
+            } else {
+                if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
+                    movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+                }
+                if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
+                    movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+                }
             }
         }
         return movesArray;
     }
 
     move(destinationSquare) {
-        let fileIndex = 0;
-        let rankIndex = 0;
+        let fileOneIndex = 0;
+        let rankOneIndex = 0;
+        let fileTwoIndex = 0;
+        let rankTwoIndex = 0;
 
         for (let i=0; i<7; i++) {
             for (let j=0; j<7; j++) {
                 if (board[i][j][0] === this.square) {
-                    fileIndex = i;
-                    rankIndex = j;
+                    fileOneIndex = i;
+                    rankOneIndex = j;
+                }
+                if (board[i][j][0] === destinationSquare) {
+                    fileTwoIndex = i;
+                    rankTwoIndex = j;
                 }
             }
         }
-        let legalMoves = findLegalMoves();
+        let legalMoves = this.findLegalMoves();
         if (legalMoves.includes(destinationSquare)) {
             this.square = destinationSquare;
-
-
+            board[fileTwoIndex][rankTwoIndex][1] = this;
+            board[fileOneIndex][rankOneIndex][1] = 'empty';
             this.onStart = false;
-
-            // need to move piece object to new square and update value of previous square to 'empty'
+            updateBoard(board);
         } else {
             console.log('not a legal move');
         }
     }
 };
-
-// starting position
-
-
+ 
 /*----- app's state (variables) -----*/
 
-// initialize starting position to true, then switch to false after starting position has been built
-let startingPosition = true;
+let playerTurn = 'white';
 
-// chess position
-// human move
-// Stanley's move
-// ^ could be consolidated into one variable
+let winCount = 0;
+let drawCount = 0;
+let lossCount = 0;
 
-// win, loss, draw 
+let squareOne = '';
+let squareTwo = '';
 
 /*----- cached element references -----*/
 
-// chess board
 const boardEl = document.getElementById('board');
+const childEls = boardEl.childNodes;
 
 /*----- event listeners -----*/
 
 const newGameBtn = document.getElementById('new-game-btn').addEventListener('click', () => {
     resetBoard();
 });
-
-// boardEl.addEventListener('click', )
-
-document.querySelectorAll('.square').forEach(squareEl => {
-    squareEl.addEventListener('click', event => {
-        // highlight square that is clicked
-        squareEl.style = 'background-color: rgb(31, 170, 113);'
-        console.log('highlighting square');
-    })
-})
-
-// const a1El = document.getElementById('a1')
-// a1El.addEventListener('click', event => {
-//     a1El.style = 'background-color: rgb(31, 170, 113);'
-//     console.log('highlighted a1')
-// })
 
 /*----- functions -----*/
 
@@ -185,6 +167,9 @@ function renderBoard(boardObj) {
             let square = document.createElement('div');
             square.setAttribute('id', boardObj[i][j][0])
             square.setAttribute('class', 'square')
+            square.addEventListener('click', () => {
+                console.log('clicked square: ' + square.id)
+            })
             if ((i+j) % 2 === 0) {
                 square.style.backgroundColor = '#8A3F09'
             } else {
@@ -195,8 +180,16 @@ function renderBoard(boardObj) {
     }
 }
 
+// Build starting position with white and black pawns
+// on the second second and seventh ranks
 function buildStartingPosition() {
-    for (i=0; i<8; i++) {
+    playerTurn = 'white';
+    for (let i=0; i<8; i++) {
+        for (let j=0; j<8; j++) {
+            board[i][j][1] = 'empty';
+        }
+    }
+    for (let i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '2';
         const whitePawn = new Pawn('white', targetSquare, true, false);
         const squareEl = document.getElementById(targetSquare);
@@ -208,7 +201,7 @@ function buildStartingPosition() {
         pawnEl.appendChild(pawnGraphic);
         board[i][1][1] = whitePawn;
     }
-    for (i=0; i<8; i++) {
+    for (let i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '7';
         const blackPawn = new Pawn('black', targetSquare, true, false);
         const squareEl = document.getElementById(targetSquare);
@@ -222,19 +215,48 @@ function buildStartingPosition() {
     }
 }
 
+// 
+function updateBoard(boardObj) {
+    // Remove all child nodes from board element
+    while (boardEl.firstChild) {
+        boardEl.removeChild(boardEl.firstChild)
+    }
+
+
+    renderBoard(boardObj);
+    for (let i=0; i<8; i++) {
+        for (let j=0; j<8; j++) {
+            if (board[i][j][1] !== 'empty') {
+                const squareEl = document.getElementById(board[i][j][0]);
+                const pawnEl = document.createElement('div');
+                squareEl.appendChild(pawnEl);
+                if (board[i][j][1].color === 'white') {
+                    pawnEl.setAttribute('class', 'whitePawn');
+                    const pawnGraphic = document.createElement('img');
+                    pawnGraphic.setAttribute('src', whitePawnPath);
+                    pawnEl.appendChild(pawnGraphic);
+                } else {
+                    pawnEl.setAttribute('class', 'blackPawn');
+                    const pawnGraphic = document.createElement('img');
+                    pawnGraphic.setAttribute('src', blackPawnPath);
+                    pawnEl.appendChild(pawnGraphic);
+                }
+            }
+        }
+    }
+    if (playerTurn === 'white') {
+        playerTurn = 'black';
+    } else {
+        playerTurn = 'white';
+    }
+}
+
 function resetBoard() {
     while (boardEl.firstChild) {
         boardEl.removeChild(boardEl.firstChild);
     }
     renderBoard(board);
     buildStartingPosition();
-    console.log('board reset. new game set up')
 }
-
-// render the gameState to update the board and pieces
-
-// calculate legal moves for each type of piece
-
-// determine checkmate (or win state)
 
 init();
