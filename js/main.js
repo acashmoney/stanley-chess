@@ -3,6 +3,8 @@
 const whitePawnPath = '../assets/white-pawn.svg';
 const blackPawnPath = '../assets/black-pawn.svg';
 
+// Create board object which is a multidimensional array
+// with no pieces
 const board = new Array(8);
 const boardFiles = {
     0: 'a',
@@ -39,34 +41,46 @@ class Pawn extends Piece {
     // output available squares to an array
     findLegalMoves() {
         let movesArray = [];
-        let fileIndex = 0;
-        let rankIndex = 0;
+        let fileIndex = null;
+        let rankIndex = null;
 
-        for (let i=0; i<7; i++) {
-            for (let j=0; j<7; j++) {
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
                 if (board[i][j][0] === this.square) {
                     fileIndex = i;
                     rankIndex = j;
+                    break;
                 }
+            }
+            if (rankIndex && fileIndex) {
+                break;
             }
         }
 
+        // Determine legal white pawn moves
         if (this.color === 'white' && playerTurn === 'white') {
+            // Check if square in front of pawn is empty
             if (board[fileIndex][rankIndex + 1][1] === 'empty') {
-                if (board[fileIndex][rankIndex + 2][1] === 'empty' && this.onStart === true) {
-                    movesArray.push(board[fileIndex][rankIndex + 2][0])
+                movesArray.push(board[fileIndex][rankIndex + 1][0]);
+                // Check if square two spaces up is empty
+                if (board[fileIndex][rankIndex + 2] && board[fileIndex][rankIndex + 2][1] === 'empty' && this.onStart === true) {
+                    movesArray.push(board[fileIndex][rankIndex + 2][0]);
                 }
-                movesArray.push(board[fileIndex][rankIndex + 1][0])
             }
+            // White pawn capture rule while on a-file
             if (this.square.includes('a') === true) {
                 if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
                     movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
                 }
-            } else if (this.square.includes('h') === true) {
+            } 
+            // White pawn capture rule while on h-file
+            else if (this.square.includes('h') === true) {
                 if (board[fileIndex - 1][rankIndex + 1][1].color === 'black') {
                     movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
                 }
-            } else {
+            } 
+            // White pawn capture rules for rest of the board
+            else {
                 if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
                     movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
                 }
@@ -74,22 +88,31 @@ class Pawn extends Piece {
                     movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
                 }
             }
-        } else if (this.color === 'black' && playerTurn === 'black') {
+        } 
+        // Determine legal black pawn moves
+        else if (this.color === 'black' && playerTurn === 'black') {
+            // Check if square in front of pawn is empty
             if (board[fileIndex][rankIndex - 1][1] === 'empty') {
-                if (board[fileIndex][rankIndex - 2][1] === 'empty' && this.onStart === true) {
+                movesArray.push(board[fileIndex][rankIndex - 1][0])
+                // Check if square two spaces up is empty
+                if (board[fileIndex][rankIndex - 2] && board[fileIndex][rankIndex - 2][1] === 'empty' && this.onStart === true) {
                     movesArray.push(board[fileIndex][rankIndex - 2][0])
                 }
-                movesArray.push(board[fileIndex][rankIndex - 1][0])
-            }   
+            }
+            // Black pawn capture rule while on a-file   
             if (this.square.includes('a') === true) {
                 if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
                     movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
                 }
-            } else if (this.square.includes('h') === true) {
+            } 
+            // Black pawn capture rule while on h-file
+            else if (this.square.includes('h') === true) {
                 if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
                     movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
                 }
-            } else {
+            } 
+            // Black pawn capture rules for rest of the board
+            else {
                 if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
                     movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
                 }
@@ -98,10 +121,13 @@ class Pawn extends Piece {
                 }
             }
         }
+        // Output an array of legal moves for a pawn
         return movesArray;
     }
 
     move(destinationSquare) {
+        // Initialize board indices for 
+        // current square and intended square
         let fileOneIndex = 0;
         let rankOneIndex = 0;
         let fileTwoIndex = 0;
@@ -119,7 +145,11 @@ class Pawn extends Piece {
                 }
             }
         }
+
+        // Store array of legal moves
         let legalMoves = this.findLegalMoves();
+
+        // Check if destination square is in array of legal moves
         if (legalMoves.includes(destinationSquare)) {
             this.square = destinationSquare;
             board[fileTwoIndex][rankTwoIndex][1] = this;
@@ -129,6 +159,15 @@ class Pawn extends Piece {
         } else {
             console.log('not a legal move');
         }
+
+        // Switch player turn after a move is made
+        if (playerTurn === 'white') {
+            playerTurn = 'black';
+        } else {
+            playerTurn = 'white';
+        }
+
+        checkWin(board);
     }
 };
  
@@ -136,12 +175,11 @@ class Pawn extends Piece {
 
 let playerTurn = 'white';
 
-let winCount = 0;
-let drawCount = 0;
-let lossCount = 0;
+let whiteWin = 0;
+let blackWin = 0;
 
-let squareOne = '';
-let squareTwo = '';
+let squareOne = null;
+let squareTwo = null;
 
 /*----- cached element references -----*/
 
@@ -153,6 +191,17 @@ const childEls = boardEl.childNodes;
 const newGameBtn = document.getElementById('new-game-btn').addEventListener('click', () => {
     resetBoard();
 });
+
+// event listener for pieces
+
+// document.getElementById('board').addEventListener('click', function(e) {
+//     childEls.forEach(function(child) {
+//         if(child.hasChildNodes) {
+//             squareOne = child.id;
+//             console.log(squareOne);
+//         }
+//     })
+// })
 
 /*----- functions -----*/
 
@@ -168,7 +217,14 @@ function renderBoard(boardObj) {
             square.setAttribute('id', boardObj[i][j][0])
             square.setAttribute('class', 'square')
             square.addEventListener('click', () => {
-                console.log('clicked square: ' + square.id)
+                if (square.hasChildNodes() && squareTwo === null) {
+                    console.log('clicked squareOne: ' + square.id);
+                    squareOne = square.id;
+                }
+                if (squareOne !== null) {
+                    console.log('clicked squareTwo: ' + square.id);
+                }
+
             })
             if ((i+j) % 2 === 0) {
                 square.style.backgroundColor = '#8A3F09'
@@ -244,10 +300,31 @@ function updateBoard(boardObj) {
             }
         }
     }
-    if (playerTurn === 'white') {
-        playerTurn = 'black';
-    } else {
-        playerTurn = 'white';
+}
+
+function handleMove() {
+
+    
+    if (squareOne !== null && squareTwo !== null) {
+
+    }
+
+    squareOne = null;
+    squareTwo = null;
+}
+
+function checkWin(boardObj) {
+    for (let i=0; i<8; i++) {
+        if (boardObj[i][0][1] !== 'empty') {
+            playerTurn = 'game over';
+            blackWin++;
+            console.log('black wins!');
+        }
+        if (boardObj[i][7][1] !== 'empty') {
+            playerTurn = 'game over';
+            whiteWin++;
+            console.log('white wins!');
+        }
     }
 }
 
