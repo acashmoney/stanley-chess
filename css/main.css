@@ -44,7 +44,6 @@ body {
     grid-template-columns: repeat(8, 10vmin);
     grid-template-rows: repeat(8, 10vmin);
     transform: rotate(270deg);
-    /* gap: 1vmin; */
 }
 
 .whitePawn {
@@ -63,7 +62,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid green; */
 }
 
 #new-game-btn {

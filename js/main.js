@@ -1,10 +1,8 @@
 /*----- constants -----*/
-// Images of pieces used in the game
+
 const whitePawnPath = '../assets/white-pawn.svg';
 const blackPawnPath = '../assets/black-pawn.svg';
 
-// Create board object which is a multidimensional array
-// with no pieces
 const board = new Array(8);
 const boardFiles = {
     0: 'a',
@@ -73,8 +71,6 @@ class Pawn extends Piece {
         super(color, square, onStart);
     }
 
-    // Calculate legal moves for piece and 
-    // output available squares to an array
     findLegalMoves() {
         let movesArray = [];
         let fileIndex = null;
@@ -157,7 +153,7 @@ class Pawn extends Piece {
                 }
             }
         }
-        // Output an array of legal moves for a pawn
+
         return movesArray;
     }
 
@@ -182,10 +178,8 @@ class Pawn extends Piece {
             }
         }
 
-        // Store array of legal moves
         let legalMoves = this.findLegalMoves();
 
-        // Check if destination square is in array of legal moves
         if (legalMoves.includes(destinationSquare)) {
             this.square = destinationSquare;
             board[fileTwoIndex][rankTwoIndex].setPiece(this);
@@ -195,7 +189,6 @@ class Pawn extends Piece {
             console.log('not a legal move');
         }
 
-        // Switch player turn after a move is made
         if (playerTurn === 'white') {
             playerTurn = 'black';
         } else {
@@ -256,7 +249,6 @@ function renderBoard() {
                     const pieceToMove = getPiece(squareOne);
                     pieceToMove.move(square.id);
 
-                    // reset square to null
                     squareOne = null;
                 }
             })
@@ -355,11 +347,11 @@ function getSquareIndices(square) {
 function checkWin() {
     for (let i=0; i<8; i++) {
         if (board[i][0].getPiece()) {
-            playerTurn = 'game over';
+            playerTurn = null;
             blackWins++;
         }
         if (board[i][7].getPiece()) {
-            playerTurn = 'game over';
+            playerTurn = null;
             whiteWins++;
         }
     }
