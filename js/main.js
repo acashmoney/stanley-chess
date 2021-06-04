@@ -61,12 +61,12 @@ class Square {
 }
 
 class Piece {
-    constructor(color, square, onStart) {
+    constructor(color, square) {
         this.color = color;
         this.square = square;
         this.onStart = true;
     }
-};
+}
 
 class Pawn extends Piece {
     constructor(color, square, onStart) {
@@ -205,7 +205,7 @@ class Pawn extends Piece {
         checkWin();
         renderGameState();
     }
-};
+}
 
 /*----- app's state (variables) -----*/
 
@@ -215,29 +215,16 @@ let whiteWins = 0;
 let blackWins = 0;
 
 let squareOne = null;
-let squareTwo = null;
 
 /*----- cached element references -----*/
 
 const boardEl = document.getElementById('board');
-const childEls = boardEl.childNodes;
 
 /*----- event listeners -----*/
 
-const newGameBtn = document.getElementById('new-game-btn').addEventListener('click', () => {
+document.getElementById('new-game-btn').addEventListener('click', () => {
     resetBoard();
 });
-
-// event listener for pieces
-
-// document.getElementById('board').addEventListener('click', function(e) {
-//     childEls.forEach(function(child) {
-//         if(child.hasChildNodes) {
-//             squareOne = child.id;
-//             console.log(squareOne);
-//         }
-//     })
-// })
 
 /*----- functions -----*/
 
@@ -269,9 +256,8 @@ function renderBoard() {
                     const pieceToMove = getPiece(squareOne);
                     pieceToMove.move(square.id);
 
-                    // reset squares to null
+                    // reset square to null
                     squareOne = null;
-                    squareTwo = null;
                 }
             })
             if ((i+j) % 2 === 0) {
