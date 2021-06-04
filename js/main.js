@@ -17,6 +17,28 @@ const boardFiles = {
     7: 'h'
 }
 
+const boardFileNotationToIndexMap = {
+    'a': 0,
+    'b': 1,
+    'c': 2,
+    'd': 3,
+    'e': 4,
+    'f': 5,
+    'g': 6,
+    'h': 7
+}
+
+const boardRanks = {
+    0: 1,
+    1: 2,
+    2: 3,
+    3: 4,
+    4: 5,
+    5: 6,
+    6: 7,
+    7: 8
+}
+
 for (let i=0; i<8; i++) {
     board[i] = new Array(8);
     for (let j=0; j<8; j++) {
@@ -217,14 +239,20 @@ function renderBoard(boardObj) {
             square.setAttribute('id', boardObj[i][j][0])
             square.setAttribute('class', 'square')
             square.addEventListener('click', () => {
-                if (square.hasChildNodes() && squareTwo === null) {
-                    console.log('clicked squareOne: ' + square.id);
-                    squareOne = square.id;
+                if (!squareOne) {
+                    if (square.hasChildNodes()) {
+                        console.log('clicked squareOne: ' + square.id);
+                        squareOne = square.id;
+                    }
                 }
-                if (squareOne !== null) {
-                    console.log('clicked squareTwo: ' + square.id);
-                }
+                else {
+                    const pieceToMove = getPiece(squareOne);
+                    pieceToMove.move(square.id);
 
+                    // reset squares to null
+                    squareOne = null;
+                    squareTwo = null;
+                }
             })
             if ((i+j) % 2 === 0) {
                 square.style.backgroundColor = '#8A3F09'
@@ -302,15 +330,15 @@ function updateBoard(boardObj) {
     }
 }
 
-function handleMove() {
+function getPiece(squareId) {
+    const [fileIndex, rankIndex] = getSquareIndices(squareId);
+    return board[fileIndex][rankIndex][1];
+}
 
-    
-    if (squareOne !== null && squareTwo !== null) {
-
-    }
-
-    squareOne = null;
-    squareTwo = null;
+function getSquareIndices(square) {
+    const fileIndex = boardFileNotationToIndexMap[square[0]];
+    const rankIndex = Number(square[1]) - 1;
+    return [fileIndex, rankIndex];
 }
 
 function checkWin(boardObj) {
