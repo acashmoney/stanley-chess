@@ -169,8 +169,8 @@ class Pawn extends Piece {
         let fileTwoIndex = 0;
         let rankTwoIndex = 0;
 
-        for (let i=0; i<7; i++) {
-            for (let j=0; j<7; j++) {
+        for (let i=0; i<8; i++) {
+            for (let j=0; j<8; j++) {
                 if (board[i][j].getSquareId() === this.square) {
                     fileOneIndex = i;
                     rankOneIndex = j;
