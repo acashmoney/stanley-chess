@@ -1,7 +1,7 @@
 /*----- constants -----*/
 
-const whitePawnPath = './../assets/white-pawn.svg';
-const blackPawnPath = './../assets/black-pawn.svg';
+const whitePawnPath = './assets/white-pawn.svg';
+const blackPawnPath = './assets/black-pawn.svg';
 
 const board = new Array(8);
 const boardFiles = {
