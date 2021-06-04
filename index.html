@@ -7,9 +7,22 @@
     <title>Stanley Chess</title>
 </head>
 <body>
-    <div id='board'></div>
-    <div id='new-game-btn'>New Game</div>
-    <link rel='stylesheet' href='/css/main.css'>
+    <div id='container'>
+        <div id='left-panel'>
+            <div id='board'></div>
+        </div>
+        <div id='right-panel'>
+            <div id='game-title' class='right-panel-item'>Stanley Chess</div>
+            <div id='scoreboard' class='right-panel-item'>
+                <div>Win: <span id='num-white-wins'>0</span></div>
+                <div>Loss: <span id='num-black-wins'>0</span></div>
+            </div>
+            <div id='button-container' class='right-panel-item'>
+                <div id='new-game-btn'>New Game</div>
+            </div>
+        </div>
+    </div>
+    <link rel='stylesheet' href='css/main.css'>
     <script src='js/main.js'></script>
 </body>
 </html>

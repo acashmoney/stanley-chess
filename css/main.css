@@ -14,6 +14,30 @@ body {
     background-image: url('../assets/Chimp\ Background.jpg');
 }
 
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+#left-panel {
+    padding: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#right-panel {
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 #board {
     border: .25vh solid grey;
     display: grid;
@@ -21,11 +45,6 @@ body {
     grid-template-rows: repeat(8, 10vmin);
     transform: rotate(270deg);
     /* gap: 1vmin; */
-}
-
-#board div {
-    /* border-radius: 50%; */
-    /* border: 1px solid grey; */
 }
 
 .whitePawn {
@@ -56,4 +75,24 @@ body {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+  }
+
+
+  .right-panel-item {
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #game-title {
+      font-size: 64px;
+      color: white;
+  }
+
+  #scoreboard {
+      font-size: 48px;
+      color: white;
+      display: flex;
+      flex-direction: column;
   }
