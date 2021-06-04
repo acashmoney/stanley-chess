@@ -191,7 +191,6 @@ class Pawn extends Piece {
             board[fileTwoIndex][rankTwoIndex].setPiece(this);
             board[fileOneIndex][rankOneIndex].setPiece(null);
             this.onStart = false;
-            updateBoard(board);
         } else {
             console.log('not a legal move');
         }
@@ -203,7 +202,8 @@ class Pawn extends Piece {
             playerTurn = 'white';
         }
 
-        checkWin(board);
+        checkWin();
+        renderGameState();
     }
 };
 
@@ -211,8 +211,8 @@ class Pawn extends Piece {
 
 let playerTurn = 'white';
 
-let whiteWin = 0;
-let blackWin = 0;
+let whiteWins = 0;
+let blackWins = 0;
 
 let squareOne = null;
 let squareTwo = null;
@@ -320,7 +320,7 @@ function buildStartingPosition() {
 }
 
 // 
-function updateBoard() {
+function renderGameState() {
     // Remove all child nodes from board element
     while (boardEl.firstChild) {
         boardEl.removeChild(boardEl.firstChild)
@@ -328,6 +328,7 @@ function updateBoard() {
 
     renderBoard();
     renderPieces();
+    renderScoreBoard();
 }
 
 function renderPieces() {
@@ -369,15 +370,18 @@ function checkWin() {
     for (let i=0; i<8; i++) {
         if (board[i][0].getPiece()) {
             playerTurn = 'game over';
-            blackWin++;
-            console.log('black wins!');
+            blackWins++;
         }
         if (board[i][7].getPiece()) {
             playerTurn = 'game over';
-            whiteWin++;
-            console.log('white wins!');
+            whiteWins++;
         }
     }
+}
+
+function renderScoreBoard() {
+    document.getElementById('num-white-wins').textContent = whiteWins; 
+    document.getElementById('num-black-wins').textContent = blackWins;
 }
 
 function resetBoard() {
