@@ -185,18 +185,16 @@ class Pawn extends Piece {
             board[fileTwoIndex][rankTwoIndex].setPiece(this);
             board[fileOneIndex][rankOneIndex].setPiece(null);
             this.onStart = false;
-        } else {
-            console.log('not a legal move');
-        }
+            
+            if (playerTurn === 'white') {
+                playerTurn = 'black';
+            } else {
+                playerTurn = 'white';
+            }
 
-        if (playerTurn === 'white') {
-            playerTurn = 'black';
-        } else {
-            playerTurn = 'white';
+            checkWin();
+            renderGameState();
         }
-
-        checkWin();
-        renderGameState();
     }
 }
 
