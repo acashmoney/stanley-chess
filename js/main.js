@@ -272,31 +272,17 @@ function buildStartingPosition() {
         }
     }
     for (let i=0; i<8; i++) {
-        let targetSquare = boardFiles[i] + '2';
+        const targetSquare = boardFiles[i] + '2';
         const whitePawn = new Pawn('white', targetSquare, true, false);
-        const squareEl = document.getElementById(targetSquare);
-        const pawnEl = document.createElement('div');
-        pawnEl.setAttribute('class', 'whitePawn');
-        squareEl.appendChild(pawnEl);
-        const pawnGraphic = document.createElement('img');
-        pawnGraphic.setAttribute('src', whitePawnPath);
-        pawnGraphic.classList.add('piece-img');
-        pawnEl.appendChild(pawnGraphic);
-        board[i][1].setPiece(whitePawn)
+        board[i][1].setPiece(whitePawn);
     }
     for (let i=0; i<8; i++) {
-        let targetSquare = boardFiles[i] + '7';
+        const targetSquare = boardFiles[i] + '7';
         const blackPawn = new Pawn('black', targetSquare, true, false);
-        const squareEl = document.getElementById(targetSquare);
-        const pawnEl = document.createElement('div');
-        pawnEl.setAttribute('class', 'blackPawn');
-        squareEl.appendChild(pawnEl);
-        const pawnGraphic = document.createElement('img')
-        pawnGraphic.setAttribute('src', blackPawnPath);
-        pawnGraphic.classList.add('piece-img');
-        pawnEl.appendChild(pawnGraphic);
         board[i][6].setPiece(blackPawn);
     }
+
+    renderGameState();
 }
 
 // 
