@@ -2,7 +2,7 @@
 
 Stanley Chess is a web application inspired by Stanley, a chimpanzee from the *Chessmaster* series of games who was the lowest rated computer opponent and played completely random moves.
 
-Stanley Chess brings this classic character into the modern world. For the initial iteration, users can play against friends in a 'pawn game', an minigame used by junior players in which the goal is to get a pawn to the end of the board. Eventually, users will be able to play against Stanley in full games of chess!
+Stanley Chess brings this classic character into the modern world. For the initial iteration, users can play against friends in a 'pawn game', a minigame used by junior players in which the goal is to get a pawn to the end of the board. Eventually, users will be able to play against Stanley in full games of chess!
 
 ![Screenshot](assets/Stanley-Chess-Screenshot.png)
 
