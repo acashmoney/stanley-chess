@@ -39,11 +39,25 @@ const boardRanks = {
     7: 8
 }
 
-for (let i=0; i<8; i++) {
-    board[i] = new Array(8);
-    for (let j=0; j<8; j++) {
-        board[i][j] = [boardFiles[i] + String(j+1), 'empty'];
+class Square {
+    constructor(fileIndex, rankIndex, piece) {
+        this.fileIndex = fileIndex;
+        this.rankIndex = rankIndex;
+        this.piece = piece;
     }
+
+    setPiece(piece) {
+        this.piece = piece;
+    }
+
+    getPiece() {
+        return this.piece;
+    }
+
+    getSquareId() {
+        return boardFiles[this.fileIndex] + String(boardRanks[this.rankIndex]);
+    }
+
 }
 
 class Piece {
@@ -68,7 +82,7 @@ class Pawn extends Piece {
 
         for (let i=0; i<8; i++) {
             for (let j=0; j<8; j++) {
-                if (board[i][j][0] === this.square) {
+                if (board[i][j]?.getSquareId() === this.square) {
                     fileIndex = i;
                     rankIndex = j;
                     break;
@@ -82,64 +96,64 @@ class Pawn extends Piece {
         // Determine legal white pawn moves
         if (this.color === 'white' && playerTurn === 'white') {
             // Check if square in front of pawn is empty
-            if (board[fileIndex][rankIndex + 1][1] === 'empty') {
-                movesArray.push(board[fileIndex][rankIndex + 1][0]);
+            if (!board[fileIndex][rankIndex + 1].getPiece()) {
+                movesArray.push(board[fileIndex][rankIndex + 1].getSquareId());
                 // Check if square two spaces up is empty
-                if (board[fileIndex][rankIndex + 2] && board[fileIndex][rankIndex + 2][1] === 'empty' && this.onStart === true) {
-                    movesArray.push(board[fileIndex][rankIndex + 2][0]);
+                if (!board[fileIndex][rankIndex + 2]?.getPiece() && this.onStart === true) {
+                    movesArray.push(board[fileIndex][rankIndex + 2]?.getSquareId());
                 }
             }
             // White pawn capture rule while on a-file
             if (this.square.includes('a') === true) {
-                if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
-                    movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
+                if (board[fileIndex + 1][rankIndex + 1].getPiece()?.color === 'black') {
+                    movesArray.push(board[fileIndex + 1][rankIndex + 1]?.getSquareId());
                 }
             } 
             // White pawn capture rule while on h-file
             else if (this.square.includes('h') === true) {
-                if (board[fileIndex - 1][rankIndex + 1][1].color === 'black') {
-                    movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
+                if (board[fileIndex - 1][rankIndex + 1].getPiece()?.color === 'black') {
+                    movesArray.push(board[fileIndex - 1][rankIndex + 1]?.getSquareId());
                 }
             } 
             // White pawn capture rules for rest of the board
             else {
-                if (board[fileIndex + 1][rankIndex + 1][1].color === 'black') {
-                    movesArray.push(board[fileIndex + 1][rankIndex + 1][0])
+                if (board[fileIndex + 1][rankIndex + 1].getPiece()?.color === 'black') {
+                    movesArray.push(board[fileIndex + 1][rankIndex + 1]?.getSquareId());
                 }
-                if (board[fileIndex - 1][rankIndex + 1][1].color === 'black') {
-                    movesArray.push(board[fileIndex - 1][rankIndex + 1][0])
+                if (board[fileIndex - 1][rankIndex + 1].getPiece()?.color === 'black') {
+                    movesArray.push(board[fileIndex - 1][rankIndex + 1]?.getSquareId());
                 }
             }
         } 
         // Determine legal black pawn moves
         else if (this.color === 'black' && playerTurn === 'black') {
             // Check if square in front of pawn is empty
-            if (board[fileIndex][rankIndex - 1][1] === 'empty') {
-                movesArray.push(board[fileIndex][rankIndex - 1][0])
+            if (!board[fileIndex][rankIndex - 1].getPiece()) {
+                movesArray.push(board[fileIndex][rankIndex - 1].getSquareId());
                 // Check if square two spaces up is empty
-                if (board[fileIndex][rankIndex - 2] && board[fileIndex][rankIndex - 2][1] === 'empty' && this.onStart === true) {
-                    movesArray.push(board[fileIndex][rankIndex - 2][0])
+                if (!board[fileIndex][rankIndex - 2]?.getPiece() && this.onStart === true) {
+                    movesArray.push(board[fileIndex][rankIndex - 2]?.getSquareId());
                 }
             }
             // Black pawn capture rule while on a-file   
             if (this.square.includes('a') === true) {
-                if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
-                    movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+                if (board[fileIndex + 1][rankIndex - 1].getPiece()?.color === 'white') {
+                    movesArray.push(board[fileIndex + 1][rankIndex - 1]?.getSquareId());
                 }
             } 
             // Black pawn capture rule while on h-file
             else if (this.square.includes('h') === true) {
-                if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
-                    movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+                if (board[fileIndex - 1][rankIndex - 1].getPiece()?.color === 'white') {
+                    movesArray.push(board[fileIndex - 1][rankIndex - 1]?.getSquareId());
                 }
             } 
             // Black pawn capture rules for rest of the board
             else {
-                if (board[fileIndex + 1][rankIndex - 1][1].color === 'white') {
-                    movesArray.push(board[fileIndex + 1][rankIndex - 1][0])
+                if (board[fileIndex + 1][rankIndex - 1].getPiece()?.color === 'white') {
+                    movesArray.push(board[fileIndex + 1][rankIndex - 1]?.getSquareId());
                 }
-                if (board[fileIndex - 1][rankIndex - 1][1].color === 'white') {
-                    movesArray.push(board[fileIndex - 1][rankIndex - 1][0])
+                if (board[fileIndex - 1][rankIndex - 1].getPiece()?.color === 'white') {
+                    movesArray.push(board[fileIndex - 1][rankIndex - 1]?.getSquareId());
                 }
             }
         }
@@ -157,11 +171,11 @@ class Pawn extends Piece {
 
         for (let i=0; i<7; i++) {
             for (let j=0; j<7; j++) {
-                if (board[i][j][0] === this.square) {
+                if (board[i][j].getSquareId() === this.square) {
                     fileOneIndex = i;
                     rankOneIndex = j;
                 }
-                if (board[i][j][0] === destinationSquare) {
+                if (board[i][j].getSquareId() === destinationSquare) {
                     fileTwoIndex = i;
                     rankTwoIndex = j;
                 }
@@ -174,8 +188,8 @@ class Pawn extends Piece {
         // Check if destination square is in array of legal moves
         if (legalMoves.includes(destinationSquare)) {
             this.square = destinationSquare;
-            board[fileTwoIndex][rankTwoIndex][1] = this;
-            board[fileOneIndex][rankOneIndex][1] = 'empty';
+            board[fileTwoIndex][rankTwoIndex].setPiece(this);
+            board[fileOneIndex][rankOneIndex].setPiece(null);
             this.onStart = false;
             updateBoard(board);
         } else {
@@ -192,7 +206,7 @@ class Pawn extends Piece {
         checkWin(board);
     }
 };
- 
+
 /*----- app's state (variables) -----*/
 
 let playerTurn = 'white';
@@ -228,15 +242,21 @@ const newGameBtn = document.getElementById('new-game-btn').addEventListener('cli
 /*----- functions -----*/
 
 function init() {
+    for (let i=0; i<8; i++) {
+        board[i] = new Array(8);
+        for (let j=0; j<8; j++) {
+            board[i][j] = new Square(i, j, null);
+        }
+    }
     renderBoard(board);
     buildStartingPosition();
 }
 
-function renderBoard(boardObj) {
-    for (let i=0; i<boardObj.length; i++) {
-        for (let j=0; j<boardObj.length; j++) {
+function renderBoard() {
+    for (let i=0; i<8; i++) {
+        for (let j=0; j<8; j++) {
             let square = document.createElement('div');
-            square.setAttribute('id', boardObj[i][j][0])
+            square.setAttribute('id', board[i][j].getSquareId())
             square.setAttribute('class', 'square')
             square.addEventListener('click', () => {
                 if (!squareOne) {
@@ -270,7 +290,7 @@ function buildStartingPosition() {
     playerTurn = 'white';
     for (let i=0; i<8; i++) {
         for (let j=0; j<8; j++) {
-            board[i][j][1] = 'empty';
+            board[i][j] = new Square(i, j, null);
         }
     }
     for (let i=0; i<8; i++) {
@@ -283,7 +303,7 @@ function buildStartingPosition() {
         const pawnGraphic = document.createElement('img');
         pawnGraphic.setAttribute('src', whitePawnPath);
         pawnEl.appendChild(pawnGraphic);
-        board[i][1][1] = whitePawn;
+        board[i][1].setPiece(whitePawn)
     }
     for (let i=0; i<8; i++) {
         let targetSquare = boardFiles[i] + '7';
@@ -295,26 +315,29 @@ function buildStartingPosition() {
         const pawnGraphic = document.createElement('img')
         pawnGraphic.setAttribute('src', blackPawnPath);
         pawnEl.appendChild(pawnGraphic);
-        board[i][6][1] = blackPawn;
+        board[i][6].setPiece(blackPawn);
     }
 }
 
 // 
-function updateBoard(boardObj) {
+function updateBoard() {
     // Remove all child nodes from board element
     while (boardEl.firstChild) {
         boardEl.removeChild(boardEl.firstChild)
     }
 
+    renderBoard();
+    renderPieces();
+}
 
-    renderBoard(boardObj);
+function renderPieces() {
     for (let i=0; i<8; i++) {
         for (let j=0; j<8; j++) {
-            if (board[i][j][1] !== 'empty') {
-                const squareEl = document.getElementById(board[i][j][0]);
+            if (board[i][j].getPiece()) {
+                const squareEl = document.getElementById(board[i][j]?.getSquareId());
                 const pawnEl = document.createElement('div');
                 squareEl.appendChild(pawnEl);
-                if (board[i][j][1].color === 'white') {
+                if (board[i][j].getPiece()?.color === 'white') {
                     pawnEl.setAttribute('class', 'whitePawn');
                     const pawnGraphic = document.createElement('img');
                     pawnGraphic.setAttribute('src', whitePawnPath);
@@ -330,9 +353,10 @@ function updateBoard(boardObj) {
     }
 }
 
+
 function getPiece(squareId) {
     const [fileIndex, rankIndex] = getSquareIndices(squareId);
-    return board[fileIndex][rankIndex][1];
+    return board[fileIndex][rankIndex].getPiece();
 }
 
 function getSquareIndices(square) {
@@ -341,14 +365,14 @@ function getSquareIndices(square) {
     return [fileIndex, rankIndex];
 }
 
-function checkWin(boardObj) {
+function checkWin() {
     for (let i=0; i<8; i++) {
-        if (boardObj[i][0][1] !== 'empty') {
+        if (board[i][0].getPiece()) {
             playerTurn = 'game over';
             blackWin++;
             console.log('black wins!');
         }
-        if (boardObj[i][7][1] !== 'empty') {
+        if (board[i][7].getPiece()) {
             playerTurn = 'game over';
             whiteWin++;
             console.log('white wins!');
