@@ -280,6 +280,7 @@ function buildStartingPosition() {
         squareEl.appendChild(pawnEl);
         const pawnGraphic = document.createElement('img');
         pawnGraphic.setAttribute('src', whitePawnPath);
+        pawnGraphic.classList.add('piece-img');
         pawnEl.appendChild(pawnGraphic);
         board[i][1].setPiece(whitePawn)
     }
@@ -292,6 +293,7 @@ function buildStartingPosition() {
         squareEl.appendChild(pawnEl);
         const pawnGraphic = document.createElement('img')
         pawnGraphic.setAttribute('src', blackPawnPath);
+        pawnGraphic.classList.add('piece-img');
         pawnEl.appendChild(pawnGraphic);
         board[i][6].setPiece(blackPawn);
     }
@@ -320,11 +322,13 @@ function renderPieces() {
                     pawnEl.setAttribute('class', 'whitePawn');
                     const pawnGraphic = document.createElement('img');
                     pawnGraphic.setAttribute('src', whitePawnPath);
+                    pawnGraphic.classList.add('piece-img');
                     pawnEl.appendChild(pawnGraphic);
                 } else {
                     pawnEl.setAttribute('class', 'blackPawn');
                     const pawnGraphic = document.createElement('img');
                     pawnGraphic.setAttribute('src', blackPawnPath);
+                    pawnGraphic.classList.add('piece-img');
                     pawnEl.appendChild(pawnGraphic);
                 }
             }

@@ -48,17 +48,19 @@ body {
 
 .whitePawn {
     transform: rotate(90deg);
+    width: 85%;
 }
 
 .blackPawn {
     transform: rotate(90deg);
+    width: 85%;
+}
+
+.piece-img {
+    width: 100%;
 }
 
 .square {
-    font-size: 6vh;
-    text-align: center;
-    color: black;
-    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
