@@ -203,11 +203,9 @@ class Pawn extends Piece {
 /*----- app's state (variables) -----*/
 
 let playerTurn = 'white';
-
 let whiteWins = 0;
 let blackWins = 0;
-
-let squareOne = null;
+let selectedSquare = null;
 
 /*----- cached element references -----*/
 
@@ -239,17 +237,16 @@ function renderBoard() {
             square.setAttribute('id', board[i][j].getSquareId())
             square.setAttribute('class', 'square')
             square.addEventListener('click', () => {
-                if (!squareOne) {
+                if (!selectedSquare) {
                     if (square.hasChildNodes()) {
-                        console.log('clicked squareOne: ' + square.id);
-                        squareOne = square.id;
+                        selectedSquare = square.id;
                     }
                 }
                 else {
-                    const pieceToMove = getPiece(squareOne);
+                    const pieceToMove = getPiece(selectedSquare);
                     pieceToMove.move(square.id);
 
-                    squareOne = null;
+                    selectedSquare = null;
                 }
             })
             if ((i+j) % 2 === 0) {
