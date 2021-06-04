@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stanley Chess</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Happy+Monkey&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id='container'>
@@ -12,7 +14,14 @@
             <div id='board'></div>
         </div>
         <div id='right-panel'>
-            <div id='game-title' class='right-panel-item'>Stanley Chess</div>
+            <div id='game-title' class='right-panel-item'>
+                <div id='title-and-logo-container'>
+                    <div id='stanley-logo-container'>
+                        <img id='stanley-logo' src='assets/Monkey-Hipster-Transparent.png'>
+                    </div>
+                    <div id='stanley-title-container'>Stanley Chess</div>
+                </div>
+            </div>
             <div id='scoreboard' class='right-panel-item'>
                 <div>Win: <span id='num-white-wins'>0</span></div>
                 <div>Loss: <span id='num-black-wins'>0</span></div>

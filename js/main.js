@@ -234,8 +234,8 @@ function renderBoard() {
     for (let i=0; i<8; i++) {
         for (let j=0; j<8; j++) {
             let square = document.createElement('div');
-            square.setAttribute('id', board[i][j].getSquareId())
-            square.setAttribute('class', 'square')
+            square.setAttribute('id', board[i][j].getSquareId());
+            square.setAttribute('class', 'square');
             square.addEventListener('click', () => {
                 if (!selectedSquare) {
                     if (square.hasChildNodes()) {
@@ -250,9 +250,9 @@ function renderBoard() {
                 }
             })
             if ((i+j) % 2 === 0) {
-                square.style.backgroundColor = '#8A3F09'
+                square.style.backgroundColor = '#2c5d63'
             } else {
-                square.style.backgroundColor = '#E7AA71'
+                square.style.backgroundColor = '#f7eebb'
             }
             boardEl.appendChild(square);
         }
